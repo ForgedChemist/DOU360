@@ -121,12 +121,19 @@ const FloorMap = () => {
     setDragStart({ x: e.clientX - dragOffset.x, y: e.clientY - dragOffset.y });
   };
 
-  // Handle mouse move event
+  // Handle mouse move event with drag limit
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
+      const newOffsetX = e.clientX - dragStart.x;
+      const newOffsetY = e.clientY - dragStart.y;
+
+      // Define drag limits
+      const dragLimitX = 300; // Adjust this value as needed
+      const dragLimitY = 200; // Adjust this value as needed
+
       setDragOffset({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y,
+        x: Math.max(-dragLimitX, Math.min(newOffsetX, dragLimitX)),
+        y: Math.max(-dragLimitY, Math.min(newOffsetY, dragLimitY)),
       });
     }
   };
