@@ -122,7 +122,7 @@ const FloorMap = () => {
   };
 
   // Handle mouse move event
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
       setDragOffset({
         x: e.clientX - dragStart.x,
@@ -139,15 +139,15 @@ const FloorMap = () => {
   // Add event listeners for mouse move and mouse up
   useEffect(() => {
     if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
+      globalThis.addEventListener("mousemove", handleMouseMove);
+      globalThis.addEventListener("mouseup", handleMouseUp);
     } else {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      globalThis.removeEventListener("mousemove", handleMouseMove);
+      globalThis.removeEventListener("mouseup", handleMouseUp);
     }
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      globalThis.removeEventListener("mousemove", handleMouseMove);
+      globalThis.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDragging, dragStart]);
 
@@ -194,6 +194,8 @@ const FloorMap = () => {
             className="relative w-[600px] h-[400px] overflow-hidden border border-gray-300 rounded-lg"
             onMouseDown={handleMouseDown}
             style={{ cursor: isDragging ? "grabbing" : "grab" }}
+            role="application"
+            aria-label="Draggable floor map"
           >
             {currentFloor === 'floor1' && (
               <div
@@ -202,20 +204,6 @@ const FloorMap = () => {
                   transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
                 }}
               >
-                <div className="absolute top-2 right-2 flex gap-2 z-10">
-                  <button
-                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                    onClick={handleZoomIn}
-                  >
-                    +
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                    onClick={handleZoomOut}
-                  >
-                    -
-                  </button>
-                </div>
                 <img
                   src="/Floor Layout.svg"
                   alt="Floor Map"
@@ -247,6 +235,22 @@ const FloorMap = () => {
                 />
               </div>
             )}
+
+            {/* Fixed zoom buttons */}
+            <div className="absolute top-2 right-2 flex gap-2 z-10">
+              <button
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                onClick={handleZoomIn}
+              >
+                +
+              </button>
+              <button
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                onClick={handleZoomOut}
+              >
+                -
+              </button>
+            </div>
           </div>
 
           {/* Display Floors Layout when zoomed into a room */}
