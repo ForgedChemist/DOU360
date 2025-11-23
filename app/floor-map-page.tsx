@@ -213,7 +213,7 @@ const FloorMap = () => {
                 }}
               >
                 <img
-                  src="/Floor Layout.svg"
+                  src="/1st Floor Layout.svg"
                   alt="Floor Map"
                   className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
                   draggable="false"
@@ -221,11 +221,11 @@ const FloorMap = () => {
                 />
                 {shouldSpawnFloorsLayout() && (
                   <img
-                    src="/Floors Layout.svg"
+                    src="/1st Floors Layout.svg"
                     alt="Floors Layout"
                     className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
                     draggable="false"
-                    style={{ transform: `scale(${zoomLevel})` }}
+                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
                   />
                 )}
                 {/* Invisible clickable room buttons */}
