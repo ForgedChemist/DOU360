@@ -229,16 +229,22 @@ const FloorMap = () => {
                 )}
                 {/* Invisible clickable room buttons */}
                 <button
-                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-blue-500 transition-all duration-200 cursor-pointer"
+                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer"
                   onClick={() => handleRoomClick("Room 1")}
                   aria-label="Room 1"
-                  style={calculateButtonPosition(204, 176, 60, 59, zoomLevel)}
+                  style={calculateButtonPosition(204, 176, 59, 58.5, zoomLevel)}
                 />
                 <button
-                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-orange-500 transition-all duration-200 cursor-pointer"
+                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer"
                   onClick={() => handleRoomClick("Room 2")}
                   aria-label="Room 2"
-                  style={calculateButtonPosition(107, 167, 98, 67, zoomLevel)}
+                  style={calculateButtonPosition(107, 167, 98, 66.5, zoomLevel)}
+                />
+                <button
+                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer"
+                  onClick={() => handleRoomClick("Room 3")}
+                  aria-label="Room 3"
+                  style={calculateButtonPosition(262, 176, 59, 58.5, zoomLevel)}
                 />
               </div>
             )}
