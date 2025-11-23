@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import roomSchedulesData from "./room-schedules.json";
 
 type DaySchedule = { time: string; subject: string; teacher?: string; room?: string }[];
@@ -110,6 +110,47 @@ const FloorMap = () => {
     };
   };
 
+  // Add state for drag functionality
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  // Handle mouse down event
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - dragOffset.x, y: e.clientY - dragOffset.y });
+  };
+
+  // Handle mouse move event
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      setDragOffset({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    }
+  };
+
+  // Handle mouse up event
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Add event listeners for mouse move and mouse up
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    } else {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, dragStart]);
+
   return (
     <div className="flex flex-col items-center py-8">
       <h1 className="text-2xl font-bold mb-6">Floor Map</h1>
@@ -148,54 +189,65 @@ const FloorMap = () => {
             </button>
           </form>
 
-          {/* Overall floor view with zoom controls */}
-          {currentFloor === 'floor1' && (
-            <div className="relative w-[600px] h-[400px]">
-              <div className="absolute top-2 right-2 flex gap-2">
-                <button
-                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                  onClick={handleZoomIn}
-                >
-                  +
-                </button>
-                <button
-                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                  onClick={handleZoomOut}
-                >
-                  -
-                </button>
-              </div>
-              <img
-                src="/Floor Layout.svg"
-                alt="Floor Map"
-                className="w-full h-full object-contain select-none pointer-events-none"
-                draggable="false"
-                style={{ transform: `scale(${zoomLevel})` }}
-              />
-              {shouldSpawnFloorsLayout() && (
+          {/* Fixed-size container for the floor map */}
+          <div
+            className="relative w-[600px] h-[400px] overflow-hidden border border-gray-300 rounded-lg"
+            onMouseDown={handleMouseDown}
+            style={{ cursor: isDragging ? "grabbing" : "grab" }}
+          >
+            {currentFloor === 'floor1' && (
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+                }}
+              >
+                <div className="absolute top-2 right-2 flex gap-2 z-10">
+                  <button
+                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                    onClick={handleZoomIn}
+                  >
+                    +
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                    onClick={handleZoomOut}
+                  >
+                    -
+                  </button>
+                </div>
                 <img
-                  src="/Floors Layout.svg"
-                  alt="Floors Layout"
+                  src="/Floor Layout.svg"
+                  alt="Floor Map"
                   className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
                   draggable="false"
                   style={{ transform: `scale(${zoomLevel})` }}
                 />
-              )}
-              {/* Invisible clickable room buttons */}
-              <button
-                className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-blue-500 transition-all duration-200 cursor-pointer"
-                onClick={() => handleRoomClick("Room 1")}
-                aria-label="Room 1"
-                style={calculateButtonPosition(204, 176, 60, 59, zoomLevel)}
-              />
-              <button
-                className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-orange-500 transition-all duration-200 cursor-pointer"
-                onClick={() => handleRoomClick("Room 2")}
-                aria-label="Room 2"
-                style={calculateButtonPosition(107, 167, 98, 67, zoomLevel)}
-              />
-            </div>
-          )}
+                {shouldSpawnFloorsLayout() && (
+                  <img
+                    src="/Floors Layout.svg"
+                    alt="Floors Layout"
+                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                    style={{ transform: `scale(${zoomLevel})` }}
+                  />
+                )}
+                {/* Invisible clickable room buttons */}
+                <button
+                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-blue-500 transition-all duration-200 cursor-pointer"
+                  onClick={() => handleRoomClick("Room 1")}
+                  aria-label="Room 1"
+                  style={calculateButtonPosition(204, 176, 60, 59, zoomLevel)}
+                />
+                <button
+                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-orange-500 transition-all duration-200 cursor-pointer"
+                  onClick={() => handleRoomClick("Room 2")}
+                  aria-label="Room 2"
+                  style={calculateButtonPosition(107, 167, 98, 67, zoomLevel)}
+                />
+              </div>
+            )}
+          </div>
 
           {/* Display Floors Layout when zoomed into a room */}
           {zoomedRoom && (
