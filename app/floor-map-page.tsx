@@ -15,14 +15,37 @@ const roomSchedules = roomSchedulesData as RoomSchedules;
 const FloorMap = () => {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
+  const [zoomedRoom, setZoomedRoom] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(1.2); // Set initial zoom level to the max zoom-out limit
+  const [zoomActions, setZoomActions] = useState(0); // Track total zoom actions
 
-  const handleRoomClick = (room: string) => {
-    setSelectedRoom(room);
+  const handleRoomZoom = (room: string) => {
+    setZoomedRoom(room);
   };
 
   const closeModal = () => setSelectedRoom(null);
   const closeTeacher = () => setSelectedTeacher(null);
+  const handleZoomOut = () => {
+    setZoomLevel((prev) => {
+      const newZoom = Math.max(prev - 0.1, 1.2); // Limit zoom out to a minimum of 1.2x
+      if (newZoom !== prev) setZoomActions((actions) => actions - 1);
+      return newZoom;
+    });
+  };
 
+  const handleZoomIn = () => {
+    setZoomLevel((prev) => {
+      const newZoom = Math.min(prev + 0.1, 2); // Limit zoom in to 2x
+      if (newZoom !== prev) setZoomActions((actions) => actions + 1);
+      return newZoom;
+    });
+  };
+
+  const shouldSpawnFloorsLayout = () => {
+    const maxZoomOutLimit = 1.2; // Minimum zoom level
+    const spawnThreshold = 3; // Threshold for zoom actions
+    return zoomLevel <= maxZoomOutLimit && zoomActions <= -spawnThreshold;
+  };
 
   // Floor selector (elevator) logic
   const FLOORS = [
@@ -38,6 +61,53 @@ const FloorMap = () => {
     // You can implement search logic here if needed
   };
 
+  const renderScheduleCell = (schedule: Record<string, DaySchedule> | undefined, time: string, day: string) => {
+    const scheduled = schedule?.[day]?.find((s) => s.time === time);
+    let extraInfo = null;
+    if (scheduled) {
+      if (selectedRoom && "teachers" in (roomSchedules[selectedRoom] || {}) && selectedTeacher && scheduled.room) {
+        extraInfo = <div className="text-xs text-gray-400 mt-1">{scheduled.room}</div>;
+      } else if (scheduled.teacher) {
+        extraInfo = <div className="text-xs text-gray-400 mt-1">{scheduled.teacher}</div>;
+      }
+    }
+    return (
+      <td className="px-4 py-2 border-b" key={day}>
+        {scheduled ? (
+          <div className="flex flex-col items-center justify-center text-center">
+            <span>{scheduled.subject}</span>
+            {extraInfo}
+          </div>
+        ) : ""}
+      </td>
+    );
+  };
+
+  const renderScheduleRows = (schedule: Record<string, DaySchedule> | undefined, allTimes: string[], days: string[]) => {
+    return allTimes.map((time) => (
+      <tr key={time}>
+        <td className="px-4 py-2 border-b font-semibold">{time}</td>
+        {days.map((day) => renderScheduleCell(schedule, time, day))}
+      </tr>
+    ));
+  };
+
+  const handleRoomClick = (room: string) => {
+    setSelectedRoom(room); // Open the modal to show the schedule for the clicked room
+  };
+
+  const calculateButtonPosition = (baseLeft: number, baseTop: number, baseWidth: number, baseHeight: number, zoomLevel: number) => {
+    const mapCenterOffsetX = 300; // Adjust this value to center the map horizontally
+    const mapCenterOffsetY = 200; // Adjust this value to center the map vertically
+
+    return {
+      left: `${(baseLeft * zoomLevel) - mapCenterOffsetX * (zoomLevel - 1)}px`, // Adjust left position with zoom and center offset
+      top: `${(baseTop * zoomLevel) - mapCenterOffsetY * (zoomLevel - 1)}px`,  // Adjust top position with zoom and center offset
+      width: `${baseWidth * zoomLevel}px`, // Adjust width based on zoom level
+      height: `${baseHeight * zoomLevel}px`, // Adjust height based on zoom level
+    };
+  };
+
   return (
     <div className="flex flex-col items-center py-8">
       <h1 className="text-2xl font-bold mb-6">Floor Map</h1>
@@ -45,7 +115,7 @@ const FloorMap = () => {
       <div className="flex flex-row w-full justify-center">
         {/* Elevator/floor selector on the left */}
         <div className="flex flex-col items-center mr-8">
-          <div className="flex flex-col gap-2 border border-gray-300 rounded-full p-2 bg-gray-200" style={{ borderRadius: '9999px'}}>
+          <div className="flex flex-col gap-2 border border-gray-300 rounded-full p-2">
             {FLOORS.map(floor => (
               <button
                 key={floor.key}
@@ -76,24 +146,71 @@ const FloorMap = () => {
             </button>
           </form>
 
-          {/* Only show the map for Floor 1 for now */}
+          {/* Overall floor view with zoom controls */}
           {currentFloor === 'floor1' && (
             <div className="relative w-[600px] h-[400px]">
-              {/* Floor SVG as background */}
-              <img src="/Home.svg" alt="Floor Map" className="w-full h-full object-contain select-none pointer-events-none" draggable="false" />
+              <div className="absolute top-2 right-2 flex gap-2">
+                <button
+                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                  onClick={handleZoomIn}
+                >
+                  +
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                  onClick={handleZoomOut}
+                >
+                  -
+                </button>
+              </div>
+              <img
+                src="/Floor Layout.svg"
+                alt="Floor Map"
+                className="w-full h-full object-contain select-none pointer-events-none"
+                draggable="false"
+                style={{ transform: `scale(${zoomLevel})` }}
+              />
+              {shouldSpawnFloorsLayout() && (
+                <img
+                  src="/Floors Layout.svg"
+                  alt="Floors Layout"
+                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+              )}
               {/* Invisible clickable room buttons */}
-              {/* Room 1 button: position (left/top), width, height */}
               <button
-                className="absolute left-[50px] top-[50px] w-[200px] h-[100px] bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-blue-500 transition-all duration-200 cursor-pointer"
+                className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-blue-500 transition-all duration-200 cursor-pointer"
                 onClick={() => handleRoomClick("Room 1")}
                 aria-label="Room 1"
+                style={calculateButtonPosition(204, 175, 60, 59, zoomLevel)}
               />
-              {/* Room 2 button: position (left/top), width, height */}
               <button
-                className="absolute left-[300px] top-[200px] w-[200px] h-[100px] bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-orange-500 transition-all duration-200 cursor-pointer"
+                className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-orange-500 transition-all duration-200 cursor-pointer"
                 onClick={() => handleRoomClick("Room 2")}
                 aria-label="Room 2"
+                style={calculateButtonPosition(107, 167, 98, 67, zoomLevel)}
               />
+            </div>
+          )}
+
+          {/* Display Floors Layout when zoomed into a room */}
+          {zoomedRoom && (
+            <div className="relative w-[600px] h-[400px]">
+              <img
+                src="/Floors Layout.svg"
+                alt={`Room ${zoomedRoom} Layout`}
+                className="w-full h-full object-contain select-none pointer-events-none"
+                draggable="false"
+                style={{ transform: `scale(${zoomLevel})` }} // Adjust Floors Layout resolution dynamically
+              />
+              <button
+                className="absolute top-2 left-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                onClick={handleZoomOut}
+              >
+                Back
+              </button>
             </div>
           )}
         </div>
@@ -157,32 +274,7 @@ const FloorMap = () => {
                         } else if (selectedRoom && typeof roomSchedules[selectedRoom] === "object" && !Array.isArray(roomSchedules[selectedRoom]) && !("teachers" in (roomSchedules[selectedRoom] || {}))) {
                           schedule = roomSchedules[selectedRoom] as Record<string, DaySchedule>;
                         }
-                        return allTimes.map((time) => (
-                          <tr key={time}>
-                            <td className="px-4 py-2 border-b font-semibold">{time}</td>
-                            {days.map((day) => {
-                              const scheduled = schedule?.[day]?.find((s) => s.time === time);
-                              let extraInfo = null;
-                              if (scheduled) {
-                                if (selectedRoom && "teachers" in (roomSchedules[selectedRoom] || {}) && selectedTeacher && scheduled.room) {
-                                  extraInfo = <div className="text-xs text-gray-400 mt-1">{scheduled.room}</div>;
-                                } else if (scheduled.teacher) {
-                                  extraInfo = <div className="text-xs text-gray-400 mt-1">{scheduled.teacher}</div>;
-                                }
-                              }
-                              return (
-                                <td className="px-4 py-2 border-b" key={day}>
-                                  {scheduled ? (
-                                    <div className="flex flex-col items-center justify-center text-center">
-                                      <span>{scheduled.subject}</span>
-                                      {extraInfo}
-                                    </div>
-                                  ) : ""}
-                                </td>
-                              );
-                            })}
-                          </tr>
-                        ));
+                        return renderScheduleRows(schedule, allTimes, days);
                       })()}
                     </tbody>
                   </table>
