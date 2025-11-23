@@ -242,7 +242,7 @@ const FloorMap = () => {
                   className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 2")}
                   aria-label="Room 2"
-                  style={calculateButtonPosition(107, 167, 98, 66.5, zoomLevel)}
+                  style={calculateButtonPosition(107, 166, 98, 67, zoomLevel)}
                 >
                   <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
                     Room 2
