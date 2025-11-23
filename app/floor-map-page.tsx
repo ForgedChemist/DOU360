@@ -229,23 +229,35 @@ const FloorMap = () => {
                 )}
                 {/* Invisible clickable room buttons */}
                 <button
-                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer"
+                  className="absolute bg-transparent hover:bg-white rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 1")}
                   aria-label="Room 1"
                   style={calculateButtonPosition(204, 176, 59, 58.5, zoomLevel)}
-                />
+                >
+                  <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                    Room 1
+                  </span>
+                </button>
                 <button
-                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer"
+                  className="absolute bg-transparent hover:bg-white rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 2")}
                   aria-label="Room 2"
                   style={calculateButtonPosition(107, 167, 98, 66.5, zoomLevel)}
-                />
+                >
+                  <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                    Room 2
+                  </span>
+                </button>
                 <button
-                  className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer"
+                  className="absolute bg-transparent hover:bg-white rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 3")}
                   aria-label="Room 3"
                   style={calculateButtonPosition(262, 176, 59, 58.5, zoomLevel)}
-                />
+                >
+                  <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                    Room 3
+                  </span>
+                </button>
               </div>
             )}
 
