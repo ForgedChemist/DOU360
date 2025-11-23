@@ -229,17 +229,17 @@ const FloorMap = () => {
                 )}
                 {/* Invisible clickable room buttons */}
                 <button
-                  className="absolute bg-transparent hover:bg-white rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
+                  className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 1")}
                   aria-label="Room 1"
-                  style={calculateButtonPosition(204, 176, 59, 58.5, zoomLevel)}
+                  style={calculateButtonPosition(204, 176, 59, 58, zoomLevel)}
                 >
                   <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
                     Room 1
                   </span>
                 </button>
                 <button
-                  className="absolute bg-transparent hover:bg-white rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
+                  className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 2")}
                   aria-label="Room 2"
                   style={calculateButtonPosition(107, 167, 98, 66.5, zoomLevel)}
@@ -249,13 +249,33 @@ const FloorMap = () => {
                   </span>
                 </button>
                 <button
-                  className="absolute bg-transparent hover:bg-white rounded-lg border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
+                  className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 3")}
                   aria-label="Room 3"
-                  style={calculateButtonPosition(262, 176, 59, 58.5, zoomLevel)}
+                  style={calculateButtonPosition(262, 176, 59, 58, zoomLevel)}
                 >
                   <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
                     Room 3
+                  </span>
+                </button>
+                                <button
+                  className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
+                  onClick={() => handleRoomClick("Room 4")}
+                  aria-label="Room 4"
+                  style={calculateButtonPosition(320, 176, 59, 58, zoomLevel)}
+                >
+                  <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                    Room 4
+                  </span>
+                </button>
+                                <button
+                  className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
+                  onClick={() => handleRoomClick("Room 5")}
+                  aria-label="Room 5"
+                  style={calculateButtonPosition(378, 176, 59, 58, zoomLevel)}
+                >
+                  <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                    Room 5
                   </span>
                 </button>
               </div>

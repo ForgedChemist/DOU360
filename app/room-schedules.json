@@ -58,6 +58,29 @@
     "Wednesday": [],
     "Thursday": [],
     "Friday": []
+  },
+    "Room 4": {
+    "Monday": [
+      { "time": "09:00 - 10:00", "subject": "Math", "teacher": "Bob Johnson" },
+      { "time": "10:15 - 11:15", "subject": "Physics", "teacher": "Bob Johnson" }
+    ],
+    "Tuesday": [
+      { "time": "11:30 - 12:30", "subject": "Chemistry", "teacher": "Alice Smith" }
+    ],
+    "Wednesday": [],
+    "Thursday": [],
+    "Friday": []
+  },
+    "Room 5": {
+    "Monday": [
+      { "time": "09:00 - 10:00", "subject": "Math", "teacher": "Bob Johnson" },
+      { "time": "10:15 - 11:15", "subject": "Physics", "teacher": "Bob Johnson" }
+    ],
+    "Tuesday": [
+      { "time": "11:30 - 12:30", "subject": "Chemistry", "teacher": "Alice Smith" }
+    ],
+    "Wednesday": [],
+    "Thursday": [],
+    "Friday": []
   }
-  
 }
