@@ -42,9 +42,11 @@ const FloorMap = () => {
   };
 
   const shouldSpawnFloorsLayout = () => {
-    const maxZoomOutLimit = 1.2; // Minimum zoom level
-    const spawnThreshold = 3; // Threshold for zoom actions
-    return zoomLevel <= maxZoomOutLimit && zoomActions <= -spawnThreshold;
+    const spawnThreshold = 6; // Threshold for total zoom actions
+
+    // Fix floating-point precision issues by using a tolerance check
+    const shouldSpawn = zoomActions >= spawnThreshold;
+    return shouldSpawn;
   };
 
   // Floor selector (elevator) logic
@@ -184,7 +186,7 @@ const FloorMap = () => {
                 className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-blue-500 transition-all duration-200 cursor-pointer"
                 onClick={() => handleRoomClick("Room 1")}
                 aria-label="Room 1"
-                style={calculateButtonPosition(204, 175, 60, 59, zoomLevel)}
+                style={calculateButtonPosition(204, 176, 60, 59, zoomLevel)}
               />
               <button
                 className="absolute bg-transparent hover:bg-transparent rounded-lg border-2 border-transparent hover:border-orange-500 transition-all duration-200 cursor-pointer"
