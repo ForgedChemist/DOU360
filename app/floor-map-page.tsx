@@ -25,9 +25,10 @@ const FloorMap = () => {
 
   const closeModal = () => setSelectedRoom(null);
   const closeTeacher = () => setSelectedTeacher(null);
+
   const handleZoomOut = () => {
     setZoomLevel((prev) => {
-      const newZoom = Math.max(prev - 0.1, 1.2); // Limit zoom out to a minimum of 1.2x
+      const newZoom = Math.max(prev - 0.1, 1.2); // zoom out minimum of 1.2x
       if (newZoom !== prev) setZoomActions((actions) => actions - 1);
       return newZoom;
     });
@@ -35,7 +36,7 @@ const FloorMap = () => {
 
   const handleZoomIn = () => {
     setZoomLevel((prev) => {
-      const newZoom = Math.min(prev + 0.1, 2); // Limit zoom in to 2x
+      const newZoom = Math.min(prev + 0.1, 2); // zoom in to 2x
       if (newZoom !== prev) setZoomActions((actions) => actions + 1);
       return newZoom;
     });
@@ -44,7 +45,7 @@ const FloorMap = () => {
   const shouldSpawnFloorsLayout = () => {
     const spawnThreshold = 6; // Threshold for total zoom actions
 
-    // Fix floating-point precision issues by using a tolerance check
+  
     const shouldSpawn = zoomActions >= spawnThreshold;
     return shouldSpawn;
   };
@@ -60,7 +61,7 @@ const FloorMap = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // You can implement search logic here if needed
+    //IMPLEMENTATION OF SEARCH FUNC (NEXT STEP AFTER FRONTEND)
   };
 
   const renderScheduleCell = (schedule: Record<string, DaySchedule> | undefined, time: string, day: string) => {
@@ -128,8 +129,8 @@ const FloorMap = () => {
       const newOffsetY = e.clientY - dragStart.y;
 
       // Define drag limits
-      const dragLimitX = 300; // Adjust this value as needed
-      const dragLimitY = 200; // Adjust this value as needed
+      const dragLimitX = 300; 
+      const dragLimitY = 200; 
 
       setDragOffset({
         x: Math.max(-dragLimitX, Math.min(newOffsetX, dragLimitX)),
@@ -281,7 +282,7 @@ const FloorMap = () => {
               </div>
             )}
 
-            {/* Fixed zoom buttons */}
+            {/* zoom buttons */}
             <div className="absolute top-2 right-2 flex gap-2 z-10">
               <button
                 className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
