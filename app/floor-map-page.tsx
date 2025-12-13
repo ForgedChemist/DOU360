@@ -102,6 +102,13 @@ const FloorMap = () => {
     setSelectedRoom(room); // Open the modal to show the schedule for the clicked room
   };
 
+  const handleRoomClickWithDragCheck = (room: string) => {
+    // Only trigger room click if drag distance is minimal (not a drag operation)
+    if (dragDistance < 5) {
+      handleRoomClick(room);
+    }
+  };
+
   const calculateButtonPosition = (baseLeft: number, baseTop: number, baseWidth: number, baseHeight: number, zoomLevel: number) => {
     const mapCenterOffsetX = 300; // Adjust this value to center the map horizontally
     const mapCenterOffsetY = 200; // Adjust this value to center the map vertically
@@ -118,11 +125,13 @@ const FloorMap = () => {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [dragDistance, setDragDistance] = useState(0);
 
   // Handle mouse down event
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setDragStart({ x: e.clientX - dragOffset.x, y: e.clientY - dragOffset.y });
+    setDragDistance(0); // Reset drag distance at the start of a new drag
   };
 
   // Handle mouse move event with drag limit
@@ -130,6 +139,10 @@ const FloorMap = () => {
     if (isDragging) {
       const newOffsetX = e.clientX - dragStart.x;
       const newOffsetY = e.clientY - dragStart.y;
+
+      // Calculate total drag distance
+      const distance = Math.sqrt(newOffsetX ** 2 + newOffsetY ** 2);
+      setDragDistance(distance);
 
       // Define drag limits
       const dragLimitX = 300; 
@@ -318,7 +331,7 @@ const FloorMap = () => {
                 {/* Invisible clickable room buttons */}
                 <button
                   className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
-                  onClick={() => handleRoomClick("Room 1")}
+                  onClick={() => handleRoomClickWithDragCheck("Room 1")}
                   aria-label="Room 1"
                   style={calculateButtonPosition(204, 176, 59, 58, zoomLevel)}
                 >
@@ -328,7 +341,7 @@ const FloorMap = () => {
                 </button>
                 <button
                   className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
-                  onClick={() => handleRoomClick("Room 2")}
+                  onClick={() => handleRoomClickWithDragCheck("Room 2")}
                   aria-label="Room 2"
                   style={calculateButtonPosition(107, 166, 10, 10, zoomLevel)}
                 >
@@ -338,7 +351,7 @@ const FloorMap = () => {
                 </button>
                 <button
                   className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
-                  onClick={() => handleRoomClick("Room 3")}
+                  onClick={() => handleRoomClickWithDragCheck("Room 3")}
                   aria-label="Room 3"
                   style={calculateButtonPosition(262, 176, 59, 58, zoomLevel)}
                 >
@@ -348,7 +361,7 @@ const FloorMap = () => {
                 </button>
                                 <button
                   className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
-                  onClick={() => handleRoomClick("Room 4")}
+                  onClick={() => handleRoomClickWithDragCheck("Room 4")}
                   aria-label="Room 4"
                   style={calculateButtonPosition(320, 176, 59, 58, zoomLevel)}
                 >
@@ -358,7 +371,7 @@ const FloorMap = () => {
                 </button>
                                 <button
                   className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
-                  onClick={() => handleRoomClick("Room 5")}
+                  onClick={() => handleRoomClickWithDragCheck("Room 5")}
                   aria-label="Room 5"
                   style={calculateButtonPosition(378, 176, 59, 58, zoomLevel)}
                 >
