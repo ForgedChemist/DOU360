@@ -52,6 +52,9 @@ const FloorMap = () => {
 
   // Floor selector (elevator) logic
   const FLOORS = [
+    { label: "-2", key: "floor-2" },
+    { label: "-1", key: "floor-1" },
+    { label: "0", key: "floor0" },
     { label: "1", key: "floor1" },
     { label: "2", key: "floor2" },
     { label: "3", key: "floor3" },
@@ -205,6 +208,90 @@ const FloorMap = () => {
             role="application"
             aria-label="Draggable floor map"
           >
+                        {currentFloor === 'floor-2' && (
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+                }}
+              >
+                <img
+                  src="/-2th Floor Layout.png"
+                  alt="Floor Map"
+                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+                {shouldSpawnFloorsLayout() && (
+                  <img
+                    src="/-2th Floors Layout.png"
+                    alt="Floors Layout"
+                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
+                  />
+                )}
+                {/* will add buttons for floor 0 rooms here */}
+          
+              </div>
+            )}
+
+            {currentFloor === 'floor-1' && (
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+                }}
+              >
+                <img
+                  src="/-1th Floor Layout.png"
+                  alt="Floor Map"
+                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+                {shouldSpawnFloorsLayout() && (
+                  <img
+                    src="/-1th Floors Layout.png"
+                    alt="Floors Layout"
+                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
+                  />
+                )}
+                {/* will add buttons for floor 0 rooms here */}
+          
+              </div>
+            )}
+
+            {currentFloor === 'floor0' && (
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+                }}
+              >
+                <img
+                  src="/0th Floor Layout.png"
+                  alt="Floor Map"
+                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+                {shouldSpawnFloorsLayout() && (
+                  <img
+                    src="/0th Floors Layout.png"
+                    alt="Floors Layout"
+                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
+                  />
+                )}
+                {/* will add buttons for floor 0 rooms here */}
+          
+              </div>
+            )}
+
             {currentFloor === 'floor1' && (
               <div
                 className="relative w-full h-full"
@@ -213,7 +300,7 @@ const FloorMap = () => {
                 }}
               >
                 <img
-                  src="/1st Floor Layout.svg"
+                  src="/1st Floor Layout.png"
                   alt="Floor Map"
                   className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
                   draggable="false"
@@ -243,7 +330,7 @@ const FloorMap = () => {
                   className="absolute bg-transparent hover:bg-white border-2 border-transparent hover:border-black transition-all duration-200 cursor-pointer flex items-center justify-center group"
                   onClick={() => handleRoomClick("Room 2")}
                   aria-label="Room 2"
-                  style={calculateButtonPosition(107, 166, 98, 67, zoomLevel)}
+                  style={calculateButtonPosition(107, 166, 10, 10, zoomLevel)}
                 >
                   <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
                     Room 2
@@ -281,6 +368,63 @@ const FloorMap = () => {
                 </button>
               </div>
             )}
+
+            {currentFloor === 'floor2' && (
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+                }}
+              >
+                <img
+                  src="/2nd Floor Layout.png"
+                  alt="Floor Map"
+                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+                {shouldSpawnFloorsLayout() && (
+                  <img
+                    src="/2nd Floors Layout.svg"
+                    alt="Floors Layout"
+                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
+                  />
+                )}
+                {/* will add buttons for floor 2 rooms here */}
+          
+              </div>
+            )}
+
+            {currentFloor === 'floor3' && (
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+                }}
+              >
+                <img
+                  src="/3rd Floor Layout.png"
+                  alt="Floor Map"
+                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+                {shouldSpawnFloorsLayout() && (
+                  <img
+                    src="/3rd Floors Layout.svg"
+                    alt="Floors Layout"
+                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
+                  />
+                )}
+                {/* will add buttons for floor 3 rooms here */}
+          
+              </div>
+            )}
+
 
             {/* zoom buttons */}
             <div className="absolute top-2 right-2 flex gap-2 z-10">
