@@ -717,33 +717,46 @@ const FloorMap = () => {
                     Room 43
                   </span>
                 </button>
-              </div>
-            )}
+                
+                {/* [-Shaped Room - Example cluster with overlapping buttons */}
+                <div className="group">
+                  <button
+                    className="absolute bg-transparent group-hover:bg-white transition-all duration-200 cursor-pointer flex items-center justify-center z-10"
+                    onClick={() => handleRoomClickWithDragCheck("Room 44")}
+                    aria-label="Room 44 - Spine"
+                    style={calculateButtonPosition(361, 225, 8, 29, zoomLevel)}
+                  >
+                    <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                      Room 44
+                    </span>
+                  </button>
 
-            {currentFloor === 'floor-1' && (
-              <div
-                className="relative w-full h-full"
-                style={{
-                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
-                }}
-              >
-                <img
-                  src="/-1th Floor Layout.png"
-                  alt="Floor Map"
-                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
-                  draggable="false"
-                  style={{ transform: `scale(${zoomLevel})` }}
-                />
-                {shouldSpawnFloorsLayout() && (
-                  <img
-                    src="/-1th Floors Layout.png"
-                    alt="Floors Layout"
-                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
-                    draggable="false"
-                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
-                  />
-                )}
-                {/* will add buttons for floor 0 rooms here */}
+                  {/* Top horizontal arm */}
+                  <button
+                    className="absolute bg-transparent group-hover:bg-white transition-all duration-200 cursor-pointer flex items-center justify-center"
+                    onClick={() => handleRoomClickWithDragCheck("Room 44")}
+                    aria-label="Room 44 - Top"
+                    style={calculateButtonPosition(360, 224, 15, 10, zoomLevel)}
+                  >
+                    <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                    </span>
+                  </button>
+                  {/* Bottom horizontal arm */}
+                  <button
+                    className="absolute bg-transparent group-hover:bg-white transition-all duration-200 cursor-pointer flex items-center justify-center"
+                    onClick={() => handleRoomClickWithDragCheck("Room 44")}
+                    aria-label="Room 44 - Bottom"
+                    style={calculateButtonPosition(360, 245, 15, 10, zoomLevel)}
+                  >
+                    <span className="opacity-0 group-hover:opacity-100 text-black text-sm font-medium transition-opacity duration-200">
+                    </span>
+                  </button>
+                  
+                  {/* Border overlays - only visible on hover */}
+                  <div className="absolute border-2 border-transparent group-hover:border-black transition-all  border-l-2pointer-events-none" style={calculateButtonPosition(360, 224, 8, 30, zoomLevel)}></div>
+                  <div className="absolute border-2 border-transparent group-hover:border-black transition-all  pointer-events-none" style={calculateButtonPosition(360, 224, 15, 10, zoomLevel)}></div>
+                  <div className="absolute border-2 border-transparent group-hover:border-black transition-all  pointer-events-none" style={calculateButtonPosition(360, 245, 15, 10, zoomLevel)}></div>
+                </div>
           
               </div>
             )}
