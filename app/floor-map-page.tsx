@@ -5,7 +5,8 @@ import { shouldSpawnFloorsLayout } from "./utils/shouldSpawnFloorsLayout";
 import { useZoomLevel } from "./hooks/useZoomLevel";
 import { useRoomClickHandler } from "./hooks/useRoomClickHandler";
 import roomSchedulesData from "./room-schedules.json";
-import FloorMinusTwo from "./floor-2";
+import FloorMinusTwo from "./Floors/floor-2";
+import FloorMinusOne from "./Floors/floor-1";
 
 type DaySchedule = { time: string; subject: string; teacher?: string; room?: string }[];
 type Teacher = { name: string; schedule: Record<string, DaySchedule> };
@@ -198,31 +199,15 @@ const FloorMap = () => {
           
               </div>
             )}
-
-                        {currentFloor === 'floor-1' && (
+                
+              {currentFloor === 'floor-1' && (
               <div
                 className="relative w-full h-full"
                 style={{
                   transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
                 }}
               >
-                <img
-                  src="/-1th Floor Layout.png"
-                  alt="Floor Map"
-                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
-                  draggable="false"
-                  style={{ transform: `scale(${zoomLevel})` }}
-                />
-                {shouldSpawnFloorsLayout(zoomActions) && (
-                  <img
-                    src="/-1th Floors Layout.png"
-                    alt="Floors Layout"
-                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
-                    draggable="false"
-                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
-                  />
-                )}
-                {/* will add buttons for floor 0 rooms here */}
+                <FloorMinusOne zoomLevel={zoomLevel} dragOffset={dragOffset} handleRoomClickWithDragCheck={handleRoomClickWithDragCheck} zoomActions={zoomActions} />
           
               </div>
             )}
