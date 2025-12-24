@@ -199,6 +199,34 @@ const FloorMap = () => {
               </div>
             )}
 
+                        {currentFloor === 'floor-1' && (
+              <div
+                className="relative w-full h-full"
+                style={{
+                  transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+                }}
+              >
+                <img
+                  src="/-1th Floor Layout.png"
+                  alt="Floor Map"
+                  className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+                {shouldSpawnFloorsLayout(zoomActions) && (
+                  <img
+                    src="/-1th Floors Layout.png"
+                    alt="Floors Layout"
+                    className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                    style={{ transform: `scale(${zoomLevel})`, opacity: 0.5 }}
+                  />
+                )}
+                {/* will add buttons for floor 0 rooms here */}
+          
+              </div>
+            )}
+
             {currentFloor === 'floor0' && (
               <div
                 className="relative w-full h-full"
