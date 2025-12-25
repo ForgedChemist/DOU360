@@ -40,7 +40,7 @@ const FloorMap = () => {
     { label: "2", key: "floor2" },
     { label: "3", key: "floor3" },
   ];
-  const [currentFloor, setCurrentFloor] = useState<string>(FLOORS[0].key);
+  const [currentFloor, setCurrentFloor] = useState<string>("floor0");
 
   const [search, setSearch] = useState("");
   const handleSearch = (e: React.FormEvent) => {
