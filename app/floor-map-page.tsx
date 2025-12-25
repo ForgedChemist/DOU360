@@ -7,6 +7,10 @@ import { useRoomClickHandler } from "./hooks/useRoomClickHandler";
 import roomSchedulesData from "./room-schedules.json";
 import FloorMinusTwo from "./Floors/floor-2";
 import FloorMinusOne from "./Floors/floor-1";
+import FloorZero from "./Floors/floor0";
+import FloorOne from "./Floors/floor1";
+import FloorTwo from "./Floors/floor2";
+import FloorThree from "./Floors/floor3";
 
 type DaySchedule = { time: string; subject: string; teacher?: string; room?: string }[];
 type Teacher = { name: string; schedule: Record<string, DaySchedule> };
