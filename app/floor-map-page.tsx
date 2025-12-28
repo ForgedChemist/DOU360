@@ -63,7 +63,7 @@ const FloorMap = () => {
       }
     }
     return (
-      <td className="px-4 py-2 border-b" key={day}>
+      <td className="px-1 py-1 md:px-4 md:py-2 border-b text-xs md:text-base" key={day}>
         {scheduled ? (
           <div className="flex flex-col items-center justify-center text-center">
             <span>{scheduled.subject}</span>
@@ -77,7 +77,7 @@ const FloorMap = () => {
   const renderScheduleRows = (schedule: Record<string, DaySchedule> | undefined, allTimes: string[], days: string[]) => {
     return allTimes.map((time) => (
       <tr key={time}>
-        <td className="px-4 py-2 border-b font-semibold">{time}</td>
+        <td className="px-1 py-1 md:px-4 md:py-2 border-b font-semibold text-xs md:text-base whitespace-nowrap">{time}</td>
         {days.map((day) => renderScheduleCell(schedule, time, day))}
       </tr>
     ));
@@ -147,10 +147,10 @@ const FloorMap = () => {
   }, [isDragging, dragStart]);
 
   return (
-    <div className="flex flex-col items-center py-8">
-      <h1 className="text-2xl font-bold mb-6">Floor Map</h1>
+    <div className="flex flex-col items-center py-4 px-2 md:py-8 md:px-0">
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Floor Map</h1>
 
-      <div className="flex flex-col md:flex-row w-full justify-center items-center md:items-start">
+      <div className="flex flex-col md:flex-row w-full max-w-7xl justify-center items-center md:items-start">
         {/* Elevator/floor selector - horizontal on mobile, vertical on desktop */}
         <div className="flex flex-col items-center mb-4 md:mb-0 md:mr-8">
           <div className="flex flex-row md:flex-col gap-2 border border-gray-300 rounded-full p-2">
@@ -167,26 +167,26 @@ const FloorMap = () => {
         </div>
 
         {/* Main content (search, map, etc) */}
-        <div className="flex flex-col items-center">
-          <div className="mb-2 text-lg font-semibold text-blue-700">Floor {FLOORS.find(f => f.key === currentFloor)?.label}</div>
+        <div className="flex flex-col items-center w-full md:w-auto">
+          <div className="mb-2 text-base md:text-lg font-semibold text-blue-700">Floor {FLOORS.find(f => f.key === currentFloor)?.label}</div>
 
           {/* Search bar above the map */}
-          <form onSubmit={handleSearch} className="flex gap-2 mb-6">
+          <form onSubmit={handleSearch} className="flex gap-2 mb-4 md:mb-6 w-full max-w-[600px] px-2 md:px-0">
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search rooms, teachers..."
-              className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="border rounded px-2 md:px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 flex-1 min-w-0 text-sm md:text-base"
             />
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200">
+            <button type="submit" className="px-3 md:px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200 text-sm md:text-base whitespace-nowrap">
               Search
             </button>
           </form>
 
           {/* Fixed-size container for the floor map */}
           <div
-            className="relative w-[600px] h-[400px] overflow-hidden border border-gray-300 rounded-lg"
+            className="relative w-full max-w-[600px] md:w-[600px] h-[300px] md:h-[400px] overflow-hidden border border-gray-300 rounded-lg mx-2 md:mx-0"
             onMouseDown={handleMouseDown}
             style={{ cursor: isDragging ? "grabbing" : "grab" }}
             role="application"
@@ -379,15 +379,15 @@ const FloorMap = () => {
 
 
             {/* zoom buttons */}
-            <div className="absolute top-2 right-2 flex gap-2 z-10">
+            <div className="absolute top-2 right-2 flex gap-1 md:gap-2 z-10">
               <button
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="px-3 py-1.5 md:px-4 md:py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm md:text-base"
                 onClick={handleZoomIn}
               >
                 +
               </button>
               <button
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="px-3 py-1.5 md:px-4 md:py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm md:text-base"
                 onClick={handleZoomOut}
               >
                 -
@@ -397,7 +397,7 @@ const FloorMap = () => {
 
           {/* Display Floors Layout when zoomed into a room */}
           {zoomedRoom && (
-            <div className="relative w-[600px] h-[400px]">
+            <div className="relative w-full max-w-[600px] md:w-[600px] h-[300px] md:h-[400px] mx-2 md:mx-0">
               <img
                 src="/Floors Layout.svg"
                 alt={`Room ${zoomedRoom} Layout`}
@@ -406,7 +406,7 @@ const FloorMap = () => {
                 style={{ transform: `scale(${zoomLevel})` }} // Adjust Floors Layout resolution dynamically
               />
               <button
-                className="absolute top-2 left-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="absolute top-2 left-2 px-3 md:px-4 py-1.5 md:py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm md:text-base"
                 onClick={handleZoomOut}
               >
                 Back
@@ -418,17 +418,17 @@ const FloorMap = () => {
 
       {/* Modal for schedule */}
       {selectedRoom && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 min-w-[300px] relative">
-            <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onClick={() => { closeModal(); closeTeacher(); }}>&times;</button>
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4 md:p-0">
+          <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 min-w-[280px] md:min-w-[300px] max-w-full md:max-w-4xl relative overflow-auto max-h-[90vh]">
+            <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl md:text-xl" onClick={() => { closeModal(); closeTeacher(); }}>&times;</button>
             {selectedRoom && "teachers" in (roomSchedules[selectedRoom] || {}) && !selectedTeacher ? (
               <>
-                <h2 className="text-xl font-bold mb-4">Teachers Lounge</h2>
+                <h2 className="text-lg md:text-xl font-bold mb-4">Teachers Lounge</h2>
                 <ul className="space-y-2">
                   {((roomSchedules[selectedRoom] as { teachers: Teacher[] }).teachers).map((teacher) => (
                     <li key={teacher.name}>
                       <button
-                        className="px-4 py-2 bg-blue-100 rounded hover:bg-blue-300 transition-colors duration-150 w-full text-left"
+                        className="px-3 py-2 md:px-4 text-sm md:text-base bg-blue-100 rounded hover:bg-blue-300 transition-colors duration-150 w-full text-left"
                         onClick={() => setSelectedTeacher(teacher)}
                       >
                         {teacher.name}
@@ -439,7 +439,7 @@ const FloorMap = () => {
               </>
             ) : (
               <>
-                <h2 className="text-xl font-bold mb-4">
+                <h2 className="text-lg md:text-xl font-bold mb-4">
                   {selectedRoom === "Room 2" && selectedTeacher
                     ? `${selectedTeacher.name}'s Schedule`
                     : `${selectedRoom} Schedule`}
@@ -449,12 +449,12 @@ const FloorMap = () => {
                   <table className="min-w-full border border-gray-300">
                     <thead>
                       <tr>
-                        <th className="px-4 py-2 border-b">Time</th>
-                        <th className="px-4 py-2 border-b">Monday</th>
-                        <th className="px-4 py-2 border-b">Tuesday</th>
-                        <th className="px-4 py-2 border-b">Wednesday</th>
-                        <th className="px-4 py-2 border-b">Thursday</th>
-                        <th className="px-4 py-2 border-b">Friday</th>
+                        <th className="px-1 py-1 md:px-4 md:py-2 border-b text-xs md:text-base">Time</th>
+                        <th className="px-1 py-1 md:px-4 md:py-2 border-b text-xs md:text-base"><span className="md:hidden">Mon</span><span className="hidden md:inline">Monday</span></th>
+                        <th className="px-1 py-1 md:px-4 md:py-2 border-b text-xs md:text-base"><span className="md:hidden">Tue</span><span className="hidden md:inline">Tuesday</span></th>
+                        <th className="px-1 py-1 md:px-4 md:py-2 border-b text-xs md:text-base"><span className="md:hidden">Wed</span><span className="hidden md:inline">Wednesday</span></th>
+                        <th className="px-1 py-1 md:px-4 md:py-2 border-b text-xs md:text-base"><span className="md:hidden">Thu</span><span className="hidden md:inline">Thursday</span></th>
+                        <th className="px-1 py-1 md:px-4 md:py-2 border-b text-xs md:text-base"><span className="md:hidden">Fri</span><span className="hidden md:inline">Friday</span></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -480,7 +480,7 @@ const FloorMap = () => {
                   </table>
                 </div>
                 {selectedRoom === "Room 2" && selectedTeacher && (
-                  <button className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300" onClick={closeTeacher}>
+                  <button className="mt-4 px-3 py-2 md:px-4 text-sm md:text-base bg-gray-200 rounded hover:bg-gray-300" onClick={closeTeacher}>
                     Back to Teachers
                   </button>
                 )}
