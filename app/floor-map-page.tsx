@@ -150,14 +150,14 @@ const FloorMap = () => {
     <div className="flex flex-col items-center py-8">
       <h1 className="text-2xl font-bold mb-6">Floor Map</h1>
 
-      <div className="flex flex-row w-full justify-center">
-        {/* Elevator/floor selector on the left */}
-        <div className="flex flex-col items-center mr-8">
-          <div className="flex flex-col gap-2 border border-gray-300 rounded-full p-2">
+      <div className="flex flex-col md:flex-row w-full justify-center items-center md:items-start">
+        {/* Elevator/floor selector - horizontal on mobile, vertical on desktop */}
+        <div className="flex flex-col items-center mb-4 md:mb-0 md:mr-8">
+          <div className="flex flex-row md:flex-col gap-2 border border-gray-300 rounded-full p-2">
             {FLOORS.map(floor => (
               <button
                 key={floor.key}
-                className={`w-12 h-12 flex items-center justify-center rounded-full border font-medium text-lg transition-colors duration-200 ${currentFloor === floor.key ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-100'}`}
+                className={`w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border font-medium text-base md:text-lg transition-colors duration-200 ${currentFloor === floor.key ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-100'}`}
                 onClick={() => setCurrentFloor(floor.key)}
               >
                 {floor.label}
