@@ -105,6 +105,14 @@ const FloorMap = () => {
     setDragDistance(0); // Reset drag distance at the start of a new drag
   };
 
+  // Handle touch start event
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setDragStart({ x: touch.clientX - dragOffset.x, y: touch.clientY - dragOffset.y });
+    setDragDistance(0);
+  };
+
   // Handle mouse move event with drag limit
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
@@ -126,23 +134,56 @@ const FloorMap = () => {
     }
   };
 
+  // Handle touch move event with drag limit
+  const handleTouchMove = (e: TouchEvent) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      const newOffsetX = touch.clientX - dragStart.x;
+      const newOffsetY = touch.clientY - dragStart.y;
+
+      // Calculate total drag distance
+      const distance = Math.sqrt(newOffsetX ** 2 + newOffsetY ** 2);
+      setDragDistance(distance);
+
+      // Define drag limits
+      const dragLimitX = 300; 
+      const dragLimitY = 200; 
+
+      setDragOffset({
+        x: Math.max(-dragLimitX, Math.min(newOffsetX, dragLimitX)),
+        y: Math.max(-dragLimitY, Math.min(newOffsetY, dragLimitY)),
+      });
+    }
+  };
+
   // Handle mouse up event
   const handleMouseUp = () => {
     setIsDragging(false);
   };
 
-  // Add event listeners for mouse move and mouse up
+  // Handle touch end event
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  // Add event listeners for mouse and touch events
   useEffect(() => {
     if (isDragging) {
       globalThis.addEventListener("mousemove", handleMouseMove);
       globalThis.addEventListener("mouseup", handleMouseUp);
+      globalThis.addEventListener("touchmove", handleTouchMove);
+      globalThis.addEventListener("touchend", handleTouchEnd);
     } else {
       globalThis.removeEventListener("mousemove", handleMouseMove);
       globalThis.removeEventListener("mouseup", handleMouseUp);
+      globalThis.removeEventListener("touchmove", handleTouchMove);
+      globalThis.removeEventListener("touchend", handleTouchEnd);
     }
     return () => {
       globalThis.removeEventListener("mousemove", handleMouseMove);
       globalThis.removeEventListener("mouseup", handleMouseUp);
+      globalThis.removeEventListener("touchmove", handleTouchMove);
+      globalThis.removeEventListener("touchend", handleTouchEnd);
     };
   }, [isDragging, dragStart]);
 
@@ -188,6 +229,7 @@ const FloorMap = () => {
           <div
             className="relative w-[600px] h-[400px] overflow-hidden border border-gray-300 rounded-lg mx-auto"
             onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
             style={{ cursor: isDragging ? "grabbing" : "grab" }}
             role="application"
             aria-label="Draggable floor map"
